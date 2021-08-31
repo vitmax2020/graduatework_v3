@@ -22,6 +22,13 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/addNewUser", method = RequestMethod.POST)
+	public String processRequest(@ModelAttribute("emp") Users emp) {
+		System.out.println("сюда зашли - контроллер");
+		usersService.insertUser(emp);
+		return "/login";
+	}
+
+/*	@RequestMapping(value = "/addNewUser", method = RequestMethod.POST)
 	public ModelAndView processRequest(@ModelAttribute("emp") Users emp) {
 		System.out.println("сюда зашли - контроллер");
 		usersService.insertUser(emp);
@@ -29,7 +36,7 @@ public class UsersController {
 		ModelAndView model = new ModelAndView("getUser");
 		model.addObject("users", users);
 		return model;
-	}
+	}*/
 
  //       @Override
 /*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

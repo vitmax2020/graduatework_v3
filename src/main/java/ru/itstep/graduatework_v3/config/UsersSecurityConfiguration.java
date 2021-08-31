@@ -29,11 +29,7 @@ public class UsersSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
     }
 
     @Override
@@ -47,16 +43,8 @@ public class UsersSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/index", "/addNewUser", "/addNewUsers","/addNewPost").permitAll()
-                .antMatchers("/single-post","/new-post").hasAnyRole("USER", "ADMIN")
-                //    .antMatchers("/getEmployees").hasAnyRole("USER", "ADMIN")
-                //    .antMatchers("/admin").hasAnyRole("ADMIN")
-                //    .antMatchers("/", "/index").permitAll()
-                //          .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                //          .antMatchers("/user/**").hasAnyRole("USER")
+                .antMatchers("/single-post","/new-post","/posts-list").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/registration").not().fullyAuthenticated()
-                //         .antMatchers("/", "/webapp/**").permitAll()
-                //       .anyRequest().authenticated()
-
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")
                 .and()

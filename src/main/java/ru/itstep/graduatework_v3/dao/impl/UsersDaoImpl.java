@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.itstep.graduatework_v3.mappers.UsersMapper;
 import ru.itstep.graduatework_v3.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,13 @@ public class UsersDaoImpl extends JdbcDaoSupport implements UsersDao {
 
         String sql = "INSERT INTO users " +
                 "( Name, password, roule, isactive) VALUES (?, ?, 1, 1)";
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(8);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+
         getJdbcTemplate().update(sql, new Object[]{
                 user.getName(),
-                user.getPassword()
+                hashedPassword
         });
     }
 

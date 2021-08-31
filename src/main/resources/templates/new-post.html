@@ -11,23 +11,25 @@
 
 <form name="addpost" action="/addNewPost" method="POST" modelAttribute="pst">
     <fieldset>
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="form-group">
-                <input type="text" class="form-control" id="caption"  name="caption" placeholder="Заголовок">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="caption" name="caption" placeholder="Заголовок">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <textarea class="form-control" name="text" id="text" cols="30" rows="10"
+                              placeholder="Текст рецепта"></textarea>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn foode-btn">Сохранить пост</button>
             </div>
         </div>
-        <div class="col-12">
-            <div class="form-group">
-                <textarea class="form-control" name="text" id="text" cols="30" rows="10" placeholder="Текст рецепта"></textarea>
-            </div>
-        </div>
-        <div class="col-12">
-            <button type="submit" class="btn foode-btn">Сохранить пост</button>
-        </div>
-    </div>
 
-        </fieldset>
+    </fieldset>
 </form>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

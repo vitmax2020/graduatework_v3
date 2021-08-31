@@ -23,27 +23,47 @@ public class PostsController {
     }
 
     @RequestMapping(value = "/addNewPost", method = RequestMethod.POST)
+    public String processRequest(@ModelAttribute("pst") Posts pst) {
+        postsService.insertPosts(pst);
+        Posts posts = postsService.getPostsById(pst.getPostId());
+        ModelAndView model = new ModelAndView("getPost");
+        model.addObject("posts", posts);
+        return singlepost(model, pst);
+    }
+
+/*    @RequestMapping(value = "/addNewPost", method = RequestMethod.POST)
     public ModelAndView processRequest(@ModelAttribute("pst") Posts pst) {
         postsService.insertPosts(pst);
         List<Posts> posts = postsService.getAllPosts(pst.getUserId());
         ModelAndView model = new ModelAndView("getPost");
         model.addObject("posts", posts);
         return model;
+    }*/
+
+    @GetMapping("new-post")
+    public String newpost() {
+        return "/new-post";
     }
 
+    @GetMapping("posts-list")
+    public String postlist(Model model) {
+        model.addAttribute("message", "Hello World!");
+        return "/posts-list";
+    }
 
-    @RequestMapping(value = "/single-post", method = RequestMethod.GET)
-    public String singlepost(Model model, Posts pst) {
+    @RequestMapping(value = "single-post", method = RequestMethod.GET)
+    public String singlepost(ModelAndView model, Posts pst) {
         //  public ModelAndView processRequest(@ModelAttribute("pst") Posts pst) {
         Posts post;
-        post = postsService.getPostsById(pst.getPostId());
-        //   Model model = new Model();
+     //   post = postsService.getPostsById(pst.getPostId());
+        //   Model model2 = model.getModel();
         //   ModelAndView model = new ModelAndView("getPost");
         //   model.addObject("posts", pst);
-        if (post != null)
-            model.addAttribute("postCaption", post.getCaption());
+
+       /* if (post != null)
+            model2.addAttribute("postCaption", post.getCaption());
         else
-            model.addAttribute("postCaption", null);
+            model2.addAttribute("postCaption", null); */
 
         return "/single-post";
 
@@ -64,11 +84,7 @@ public class PostsController {
         }
     }
 
-    @GetMapping("posts-list")
-    public String postlist(Model model) {
-        model.addAttribute("message", "Hello World!");
-        return "posts-list";
-    }
+
 
 
     @RequestMapping(value = "/posts-list", method = RequestMethod.POST)

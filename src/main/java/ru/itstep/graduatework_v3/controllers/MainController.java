@@ -125,10 +125,7 @@ public class MainController {
     }
 
 
-    @GetMapping("/new-post")
-    public String newpost() {
-        return "new-post";
-    }
+
 
 
 }

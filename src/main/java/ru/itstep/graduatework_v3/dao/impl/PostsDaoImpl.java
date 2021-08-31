@@ -55,7 +55,7 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
 
     @Override
     public Posts getPostsById(Integer id) {
-        String sql = "SELECT * FROM posts p WHERE postsId = ?";
+        String sql = "SELECT * FROM posts p WHERE PostId = ?";
         //new Object[]{Id},
         return (Posts) getJdbcTemplate().queryForObject(sql, (rs, rwNumber) -> {
             Posts pst = new Posts(id);

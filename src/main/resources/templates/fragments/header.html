@@ -29,13 +29,11 @@
                             </form>
                         </div>
 
-                        <!-- Social Button -->
+                        <!-- Показ авторизованного пользователя -->
                         <div class="top-social-info">
                             <span th:if="${userInfo != null}" th:utext="${userInfo}"></span>
                             <a th:if="${userInfo == null}" th:href="@{login}">авторизоваться</a>
-
-                                <a th:if="${userInfo != null}" th:href="@{single-posts}" class="newpost">Новая запись</a>
-
+                            <a th:if="${userInfo != null}" th:href="@{new-posts}" class="newpost">Новая запись</a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +82,8 @@
                                 <li><a th:href="@{index}">На главную</a></li>
                                 <li><a href="#">Блог</a>
                                     <ul class="dropdown">
-                                        <li><a th:href="@{posts-list}">Посмотреть свой блог</a></li>
+                                        <li><a th:href="@{posts-list}">Посмотреть блог</a></li>
+                                        <li><a th:href="@{new-post}">Новый пост</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#">Категории</a>
