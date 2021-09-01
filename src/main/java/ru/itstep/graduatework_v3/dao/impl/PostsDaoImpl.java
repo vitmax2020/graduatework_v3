@@ -1,6 +1,9 @@
 package ru.itstep.graduatework_v3.dao.impl;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import ru.itstep.graduatework_v3.dao.PostsDao;
+import ru.itstep.graduatework_v3.mappers.PostsMapper;
+import ru.itstep.graduatework_v3.mappers.UsersMapper;
 import ru.itstep.graduatework_v3.model.Posts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -11,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 //import java.util.*;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,7 +35,7 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
     }
 
     @Override
-    public void insertPost(Posts pst) {
+    public Integer insertPost(Posts pst) {
 
         String sql = "INSERT INTO posts " +
                 "(caption, text, userid, Rating, Visible, datecreate) VALUES (?, ?, ?, 0, 1,?)";
@@ -41,6 +45,10 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
                 pst.getUserId(),
                 pst.getDatecreate()
         });
+        Map<String, Object> rowMap = getJdbcTemplate().queryForMap("SELECT LAST_INSERT_ID() as id");
+        BigInteger PostId = (java.math.BigInteger) rowMap.get("id");
+        return PostId.intValue();
+
     }
 
     @Override
@@ -56,7 +64,19 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
     @Override
     public Posts getPostsById(Integer id) {
         String sql = "SELECT * FROM posts p WHERE PostId = ?";
-        //new Object[]{Id},
+
+        Object[] params = new Object[]{id};
+        PostsMapper mapper = new PostsMapper();
+        try {
+            Posts postInfo = this.getJdbcTemplate().queryForObject(sql, mapper, params);
+            return postInfo;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+
+       /* //new Object[]{Id},
         return (Posts) getJdbcTemplate().queryForObject(sql, (rs, rwNumber) -> {
             Posts pst = new Posts(id);
             //   emp.setPostId(rs.getInt ("PostId"));
@@ -68,8 +88,8 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
             //      pst.setUserName(rs.getString("Text"));
 
             return pst;
-        });
-    }
+        });*/
+
 
     @Override
     public List<Posts> getAllPosts(Integer userId) {
@@ -87,8 +107,8 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
             pst.setRating((Integer) row.get("Rating"));
             pst.setUserId((Integer) row.get("UserId"));
             pst.setVisible((Boolean) row.get("Visible"));
-        //    java.sql.Date SqlDate = java.sql.Date.valueOf((String) row.get("Datecreate"));
-       //     pst.setDatecreate(new java.util.Date(SqlDate.getTime()));
+            //    java.sql.Date SqlDate = java.sql.Date.valueOf((String) row.get("Datecreate"));
+            //     pst.setDatecreate(new java.util.Date(SqlDate.getTime()));
             pst.setUserName((String) row.get("username"));
             ;
             result.add(pst);
@@ -117,5 +137,6 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
             ;
             result.add(pst);
         }
-        return result;    }
+        return result;
+    }
 }

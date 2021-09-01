@@ -14,6 +14,9 @@ public class Posts {
     private Boolean visible;
     private Date datecreate;
 
+    public Posts(Integer postid, String caption, String text, Integer rating, Integer visible, Date datecreate) {
+    }
+
     public Date getDatecreate() {
         return datecreate;
     }

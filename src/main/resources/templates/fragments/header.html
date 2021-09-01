@@ -31,7 +31,7 @@
 
                         <!-- Показ авторизованного пользователя -->
                         <div class="top-social-info">
-                            <span th:if="${userInfo != null}" th:utext="${userInfo}"></span>
+                            <span th:if="${userName != null}" th:utext="${userName}"></span>
                             <a th:if="${userInfo == null}" th:href="@{login}">авторизоваться</a>
                             <a th:if="${userInfo != null}" th:href="@{new-posts}" class="newpost">Новая запись</a>
                         </div>

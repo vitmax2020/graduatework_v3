@@ -23,7 +23,7 @@ public class PostsServiceImpl implements PostsService {
     private UsersService userDAO;
 
     @Override
-    public void insertPosts(Posts pst) {
+    public Integer insertPosts(Posts pst) {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -39,7 +39,7 @@ public class PostsServiceImpl implements PostsService {
 
         Integer userId = userDAO.getUserIdByName(userName);
         pst.setUserId(userId);
-        postsDao.insertPost(pst);
+        return postsDao.insertPost(pst);
     }
 
 

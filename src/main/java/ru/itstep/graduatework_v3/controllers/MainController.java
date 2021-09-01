@@ -29,9 +29,9 @@ public class MainController {
         //  User loginedUser = (User) ((Authentication) principal).getPrincipal();
         if (principal != null)
             //     String userInfo = WebUtils.toString(loginedUser);
-            model.addAttribute("userInfo", principal.getName());
+            model.addAttribute("userName", principal.getName());
         else
-            model.addAttribute("userInfo", null);
+            model.addAttribute("userName", null);
 
         return "/index";
     }

@@ -24,11 +24,16 @@
                 </div>
             </div>
             <div class="col-12">
-                <button type="submit" class="btn foode-btn">Сохранить пост</button>
+                <button type="submit" class="btn foode-btn active m-2">Сохранить пост</button>
             </div>
         </div>
 
     </fieldset>
+</form>
+<br>
+<form enctype="multipart/form-data" method="post">
+    <p><input type="file" name="f">
+        <input type="submit" class="btn foode-btn active m-2" value="Загрузить титульное изображение" accept="image/*,image/jpeg"></p>
 </form>
 <div th:replace="fragments/footer :: footer"/>
 </body>
