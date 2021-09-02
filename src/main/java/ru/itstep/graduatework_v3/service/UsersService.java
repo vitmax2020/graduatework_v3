@@ -14,5 +14,6 @@ public interface UsersService {
 	Users getUsersByName(String userName);
 	Integer getUserRole(Integer Id);
 	Integer getUserIdByName(String userName);
+	String getUserNameById(Integer userId);
 	String getCurrentUserName();
 }

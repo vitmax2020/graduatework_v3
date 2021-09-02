@@ -62,6 +62,13 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
+	public String getUserNameById(Integer userId) {
+		String strusers = usersDao.getUserName(userId);
+	//	System.out.println(intusers);
+
+		return strusers;
+	}
+	@Override
 	public Integer getUserIdByName(String userName) {
 		Integer intusers = usersDao.getUserId(userName);
 		System.out.println(intusers);

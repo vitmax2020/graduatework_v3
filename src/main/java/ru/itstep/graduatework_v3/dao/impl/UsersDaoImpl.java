@@ -162,7 +162,7 @@ public class UsersDaoImpl extends JdbcDaoSupport implements UsersDao {
 
         Object[] params = new Object[]{userName};
         UsersMapper mapper = new UsersMapper();
-        System.out.println("userName - " + userName);
+        //     System.out.println("userName - " + userName);
         try {
             Users userInfo = this.getJdbcTemplate().queryForObject(sql, mapper, params);
             Integer userId = userInfo.getId();
@@ -171,6 +171,18 @@ public class UsersDaoImpl extends JdbcDaoSupport implements UsersDao {
         } catch (EmptyResultDataAccessException e) {
             System.out.println(e.getMessage());
             return 0;
+        }
+    }
+
+    @Override
+    public String getUserName(Integer userId) {
+        String Name_QUERY = "SELECT name FROM users WHERE ID=?";
+
+        try {
+            return this.getJdbcTemplate().queryForObject(Name_QUERY, String.class, userId);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 }

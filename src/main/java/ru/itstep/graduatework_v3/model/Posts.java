@@ -11,10 +11,16 @@ public class Posts {
     private String caption;
     private String text;
     private Integer rating;
-    private Boolean visible;
+    private Integer visible;
     private Date datecreate;
 
     public Posts(Integer postid, String caption, String text, Integer rating, Integer visible, Date datecreate) {
+        this.setPostId(postid);
+        this.setCaption(caption);
+        this.setText(text);
+        this.setRating(rating);
+        this.setVisible(visible);
+        this.setDatecreate(datecreate);
     }
 
     public Date getDatecreate() {
@@ -81,11 +87,11 @@ public class Posts {
         this.rating = rating;
     }
 
-    public Boolean getVisible() {
+    public Integer getVisible() {
         return visible;
     }
 
-    public void setVisible(Boolean visible) {
+    public void setVisible(Integer visible) {
         this.visible = visible;
     }
 }

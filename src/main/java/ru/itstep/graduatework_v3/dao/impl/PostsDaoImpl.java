@@ -64,18 +64,16 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
     @Override
     public Posts getPostsById(Integer id) {
         String sql = "SELECT * FROM posts p WHERE PostId = ?";
-
         Object[] params = new Object[]{id};
         PostsMapper mapper = new PostsMapper();
         try {
             Posts postInfo = this.getJdbcTemplate().queryForObject(sql, mapper, params);
             return postInfo;
         } catch (EmptyResultDataAccessException e) {
+            System.out.println(e.getMessage());
             return null;
         }
     }
-
-
        /* //new Object[]{Id},
         return (Posts) getJdbcTemplate().queryForObject(sql, (rs, rwNumber) -> {
             Posts pst = new Posts(id);
@@ -93,24 +91,26 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
 
     @Override
     public List<Posts> getAllPosts(Integer userId) {
-        String sql = "SELECT *, u.name as username FROM posts p, users u " +
+        String sql = "SELECT p.*, u.name as username FROM posts p, users u " +
                 " where u.id = p.UserId " +
                 "and visible = 1 and UserId=? order by datecreate";
-        Object[] params = new Object[]{userId};
+
+       Object[] params = new Object[]{userId};
 
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, params);
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<Posts> result = new ArrayList<Posts>();
         for (Map<String, Object> row : rows) {
             Posts pst = new Posts();
+            pst.setPostId((Integer) row.get("PostId"));
             pst.setCaption((String) row.get("Caption"));
+            pst.setText((String) row.get("Text"));
             pst.setRating((Integer) row.get("Rating"));
             pst.setUserId((Integer) row.get("UserId"));
-            pst.setVisible((Boolean) row.get("Visible"));
+     //       pst.setVisible((Integer) row.get("Visible"));
             //    java.sql.Date SqlDate = java.sql.Date.valueOf((String) row.get("Datecreate"));
             //     pst.setDatecreate(new java.util.Date(SqlDate.getTime()));
             pst.setUserName((String) row.get("username"));
-            ;
             result.add(pst);
         }
         return result;
@@ -130,11 +130,10 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
             pst.setCaption((String) row.get("Caption"));
             pst.setRating((Integer) row.get("Rating"));
             pst.setUserId((Integer) row.get("UserId"));
-            pst.setVisible((Boolean) row.get("Visible"));
+            pst.setVisible((Integer) row.get("Visible"));
             //    java.sql.Date SqlDate = java.sql.Date.valueOf((String) row.get("Datecreate"));
             //     pst.setDatecreate(new java.util.Date(SqlDate.getTime()));
             pst.setUserName((String) row.get("username"));
-            ;
             result.add(pst);
         }
         return result;

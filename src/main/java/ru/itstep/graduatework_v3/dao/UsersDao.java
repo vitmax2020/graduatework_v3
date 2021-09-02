@@ -14,4 +14,5 @@ public interface UsersDao {
 	Users getUsersByName(String userName);
 	Integer getUserRole(Integer Id);
 	Integer getUserId(String userId);
+	String getUserName(Integer userId);
 }

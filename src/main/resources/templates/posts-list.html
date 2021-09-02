@@ -7,11 +7,34 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<div class="top-social-info">
-    <span th:if="${userInfo != null}" th:utext="${userInfo}"></span>
+
+<div class="single-blog-post d-flex flex-wrap mt-50" th:each="postList : ${postList}">
+    <!-- Thumbnail -->
+    <div class="post-thumbnail mb-50">
+        <a href="#"><img src="img/blog-img/9.jpg" alt=""></a>
+    </div>
+    <!-- Content -->
+    <div class="post-content mb-50">
+        <p class="post-date">
+            <span th:text="${postList.datecreate}"></span></p>
+        <form th:action="@{/single-post-id}" method="POST" modelAttribute="pst">
+            <fieldset>
+                <input type="text" style="display:none" name="postId" id="postId" th:value="${postList.PostId}">
+                <h4>
+                <input type="submit" class="link-button" th:value="${postList.caption}"/>
+                </h4>
+            </fieldset>
+        </form>
+
+        <div class="post-meta">
+            <a href="#"><span th:text="${postList.UserName}"</span> </a>
+            <a href="#"><i class="fa fa-comments"></i> 08</a>
+        </div>
 
 
+        <p class="post-excerpt">
+        <span th:text="${postList.text}"></span></p>
+    </div>
 </div>
-
 </body>
 </html>

@@ -1937,6 +1937,13 @@ blockquote {
             border-color: $hover-color;
         }
     }
+    .link-button {
+        background: none;
+        border: none;
+        color: #0066ff;
+        text-decoration: underline;
+        cursor: pointer;
+    }
     textarea.form-control {
         height: 120px;
     }

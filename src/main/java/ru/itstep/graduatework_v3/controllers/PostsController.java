@@ -3,39 +3,65 @@ package ru.itstep.graduatework_v3.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import ru.itstep.graduatework_v3.model.Posts;
 import ru.itstep.graduatework_v3.model.Users;
 import ru.itstep.graduatework_v3.service.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.itstep.graduatework_v3.service.UsersService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PostsController {
     @Autowired
     PostsService postsService;
 
-  /*  @RequestMapping(value = "/addNewPost", method = RequestMethod.GET)
-    public ModelAndView show() {
-        return new ModelAndView("Post", "pst", new Posts());
-    }
-*/
+    @Autowired
+    UsersService usersService;
+
+    private List<String> postslist = new ArrayList<>();
+    private String postCaption;
+    Map<String, String> params = new HashMap<String, String>();
+
+    /*  @RequestMapping(value = "/addNewPost", method = RequestMethod.GET)
+      public ModelAndView show() {
+          return new ModelAndView("Post", "pst", new Posts());
+      }
+  */
     @RequestMapping(value = "/addNewPost", method = RequestMethod.POST)
     public String addNewPost(Model model, Posts pst) {
         Integer newId = postsService.insertPosts(pst);
-    //    System.out.println("новый ID "+newId);
+        System.out.println("новый ID " + newId);
         Posts posts = postsService.getPostsById(newId);
-    //    if (posts != null)
-            //     String userInfo = WebUtils.toString(loginedUser);
-            model.addAttribute("caption", posts.getCaption());
-     //   else
-     //       model.addAttribute("caption", null);
+        if (posts != null)
+            postCaption = posts.getCaption();
+        else
+            System.out.println("не найден пост");
+
+        //  postCaption = posts.getCaption();
+        String userName =
+                usersService.getUserNameById(posts.getUserId());
+        params.put("author", userName);
+        params.put("caption", posts.getCaption());
+        params.put("text", posts.getText());
+
+        //  String result = restTemplate.getForObject(GET_URL, String.class, params);
+
+        //  postslist.add(model);
+        //     model.addAttribute("caption", posts.getCaption());
+        // System.out.println("Заголовок "+postCaption);
+        //   else
+        //       model.addAttribute("caption", null);
 
         //    ModelAndView model = new ModelAndView("getPost");
-    //    model.addObject("posts", posts);
-        return "/single-post";
+        //    model.addObject("posts", posts);
+        return "redirect:/single-post";
     }
 
 /*    @RequestMapping(value = "/addNewPost", method = RequestMethod.POST)
@@ -54,14 +80,35 @@ public class PostsController {
 
     @GetMapping("posts-list")
     public String postlist(Model model) {
-        model.addAttribute("message", "Hello World!");
+        String userName = usersService.getCurrentUserName();
+        Integer userId = usersService.getUserIdByName(userName);
+        List<Posts> postslist1 = new ArrayList<>();
+        postslist1 = postsService.getAllPosts(userId);
+
+        model.addAttribute("postList", postslist1);
         return "/posts-list";
     }
 
+    @RequestMapping(value ="single-post-id", method = RequestMethod.POST)
+    public String processRequest(@ModelAttribute("pst") Posts pst) {
+        System.out.println("сюда зашли - контроллер");
+        Posts posts = postsService.getPostsById(pst.getPostId());
+        if (posts != null)
+            postCaption = posts.getCaption();
+        else
+            System.out.println("не найден пост");
+        String userName =
+        usersService.getUserNameById(posts.getUserId());
+        params.put("author", userName);
+        params.put("caption", posts.getCaption());
+        params.put("text", posts.getText());
+
+        return "redirect:/single-post";
+    }
 
     @GetMapping("single-post")
     public String singlepost(Model model) {
-   //     model.addAttribute("message", "Hello World!");
+        model.addAttribute("postInfo", params);
         return "/single-post";
     }
 
