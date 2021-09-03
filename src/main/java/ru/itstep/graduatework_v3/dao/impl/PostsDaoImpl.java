@@ -63,14 +63,22 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
 
     @Override
     public Posts getPostsById(Integer id) {
-        String sql = "SELECT * FROM posts p WHERE PostId = ?";
+//        String sql = "SELECT * FROM posts p WHERE PostId = ?";
+        String sql = "SELECT p.*, " +
+                " u.name as username, i.imglink" +
+                " FROM posts p" +
+                " left join images i on  i.PostId = p.PostId and  i.isTitle = 1 "+
+                ", users u " +
+                " where p.PostId = ?" +
+                " and u.id = p.UserId " ;
+
         Object[] params = new Object[]{id};
         PostsMapper mapper = new PostsMapper();
         try {
             Posts postInfo = this.getJdbcTemplate().queryForObject(sql, mapper, params);
             return postInfo;
         } catch (EmptyResultDataAccessException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Ошибка в getPostsById: "+e.getMessage());
             return null;
         }
     }
@@ -91,13 +99,36 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
 
     @Override
     public List<Posts> getAllPosts(Integer userId) {
-        String sql = "SELECT p.*, u.name as username FROM posts p, users u " +
+        String sql = "SELECT p.*, u.name as username, i.imglink" +
+                " FROM posts p" +
+                " left join images i on  i.PostId = p.PostId and  i.isTitle = 1 "+
+                ", users u " +
                 " where u.id = p.UserId " +
-                "and visible = 1 and UserId=? order by datecreate";
+                "and p.visible = 1 and p.UserId=? order by datecreate";
 
        Object[] params = new Object[]{userId};
 
         List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, params);
+        return addModel(rows);
+    }
+
+    @Override
+    public List<Posts> getAllPosts() {
+        String sql = "SELECT p.PostId, Caption, Rating, p.UserId, substr(text,1,200) as Text, u.name as username, i.imglink" +
+                " FROM posts p" +
+                " left join images i on  i.PostId = p.PostId and  i.isTitle = 1 "+
+                ", users u " +
+                " where u.id = p.UserId " +
+                " and visible = 1 order by rating desc " +
+                "  limit 10";
+        List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+
+
+        return addModel(rows);
+    }
+
+
+    public List<Posts> addModel(List<Map<String, Object>> rows) {
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<Posts> result = new ArrayList<Posts>();
         for (Map<String, Object> row : rows) {
@@ -107,33 +138,11 @@ public class PostsDaoImpl extends JdbcDaoSupport implements PostsDao {
             pst.setText((String) row.get("Text"));
             pst.setRating((Integer) row.get("Rating"));
             pst.setUserId((Integer) row.get("UserId"));
-     //       pst.setVisible((Integer) row.get("Visible"));
+            //      pst.setVisible((Integer) row.get("Visible"));
             //    java.sql.Date SqlDate = java.sql.Date.valueOf((String) row.get("Datecreate"));
             //     pst.setDatecreate(new java.util.Date(SqlDate.getTime()));
             pst.setUserName((String) row.get("username"));
-            result.add(pst);
-        }
-        return result;
-    }
-
-    @Override
-    public List<Posts> getAllPosts() {
-        String sql = "SELECT *, u.name as username FROM posts p, users u " +
-                " where u.id = p.UserId " +
-                "and visible = 1 order by datecreate";
-        List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
-
-        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        List<Posts> result = new ArrayList<Posts>();
-        for (Map<String, Object> row : rows) {
-            Posts pst = new Posts();
-            pst.setCaption((String) row.get("Caption"));
-            pst.setRating((Integer) row.get("Rating"));
-            pst.setUserId((Integer) row.get("UserId"));
-            pst.setVisible((Integer) row.get("Visible"));
-            //    java.sql.Date SqlDate = java.sql.Date.valueOf((String) row.get("Datecreate"));
-            //     pst.setDatecreate(new java.util.Date(SqlDate.getTime()));
-            pst.setUserName((String) row.get("username"));
+            pst.setImglink((String) row.get("imglink"));
             result.add(pst);
         }
         return result;

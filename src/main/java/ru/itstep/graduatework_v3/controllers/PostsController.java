@@ -47,7 +47,7 @@ public class PostsController {
         //  postCaption = posts.getCaption();
         String userName =
                 usersService.getUserNameById(posts.getUserId());
-        params.put("author", userName);
+        params.put("username", userName);
         params.put("caption", posts.getCaption());
         params.put("text", posts.getText());
 
@@ -97,9 +97,9 @@ public class PostsController {
             postCaption = posts.getCaption();
         else
             System.out.println("не найден пост");
-        String userName =
-        usersService.getUserNameById(posts.getUserId());
-        params.put("author", userName);
+    //    String userName =
+     //   usersService.getUserNameById(posts.getUserId());
+        params.put("username", posts.getUserName());
         params.put("caption", posts.getCaption());
         params.put("text", posts.getText());
 

@@ -13,14 +13,26 @@ public class Posts {
     private Integer rating;
     private Integer visible;
     private Date datecreate;
+    private String imglink;
 
-    public Posts(Integer postid, String caption, String text, Integer rating, Integer visible, Date datecreate) {
+    public String getImglink() {
+        return imglink;
+    }
+
+    public void setImglink(String imglink) {
+        this.imglink = imglink;
+    }
+
+    public Posts(Integer postid, String caption, String text, Integer rating, Integer visible, Date datecreate,
+                 String username, String imglink) {
         this.setPostId(postid);
         this.setCaption(caption);
         this.setText(text);
         this.setRating(rating);
         this.setVisible(visible);
         this.setDatecreate(datecreate);
+        this.setUserName(username);
+        this.setImglink(imglink);
     }
 
     public Date getDatecreate() {
@@ -95,3 +107,5 @@ public class Posts {
         this.visible = visible;
     }
 }
+
+

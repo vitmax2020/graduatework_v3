@@ -17,22 +17,30 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.itstep.graduatework_v3.utils.WebUtils;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class MainController {
+    @Autowired
+    PostsService postsService;
+
+    @Autowired
+    UsersService usersService;
 
     // @GetMapping(value = {"/", "/index"})
     @RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 
     public String index(Model model, Principal principal) {
-        //  User loginedUser = (User) ((Authentication) principal).getPrincipal();
         if (principal != null)
-            //     String userInfo = WebUtils.toString(loginedUser);
             model.addAttribute("userName", principal.getName());
         else
             model.addAttribute("userName", null);
 
+        List<Posts> postslist1 = new ArrayList<>();
+        postslist1 = postsService.getAllPosts();
+
+        model.addAttribute("postList", postslist1);
         return "/index";
     }
 

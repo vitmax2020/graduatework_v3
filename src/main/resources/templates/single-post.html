@@ -56,19 +56,19 @@
                             <div class="post-content">
                                 <p class="post-date">MAY 8, 2018 / foody</p>
 
-
-                                    <span th:text="${postInfo.caption}"></span>
+                                <h4 class="post-title">
+                                    <span th:text="${postInfo.caption}"></span></h4>
 
                               <!--  <span th:if="${caption != null}" th:utext="${caption}"></span> -->
                                 <div class="post-meta">
                                     <div>
                                         <span>автор</span>
-                                        <span th:text="${postInfo.author}"></span>
+                                        <span th:text="${postInfo.username}"></span>
                                 </div>
                                     <a href="#"><i class="fa fa-eye"></i> 192</a>
                                     <a href="#"><i class="fa fa-comments"></i> 08</a>
                                 </div>
-                                <span th:text="${postInfo.text}"></span>
+                                <span th:utext="${postInfo.text}"></span>
                             </div>
                         </div>
 

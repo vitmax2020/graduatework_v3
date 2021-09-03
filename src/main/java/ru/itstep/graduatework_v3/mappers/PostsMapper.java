@@ -21,7 +21,9 @@ public class PostsMapper implements RowMapper<Posts> {
         Integer rating = rs.getInt("Rating");
         Integer visible = rs.getInt("Visible");
         Date datecreate = rs.getDate("DateCreate");
+        String username = rs.getString("UserName");
+        String imglink = rs.getString("Imglink");
 
-        return new Posts(postid, caption, text, rating, visible, datecreate);
+        return new Posts(postid, caption, text, rating, visible, datecreate, username, imglink);
     }
 }
