@@ -5,8 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import ru.itstep.graduatework_v3.model.Comments;
 import ru.itstep.graduatework_v3.model.Posts;
 import ru.itstep.graduatework_v3.model.Users;
+import ru.itstep.graduatework_v3.service.CommentsService;
 import ru.itstep.graduatework_v3.service.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ public class PostsController {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    CommentsService commentsService;
+
     private List<String> postslist = new ArrayList<>();
     private String postCaption;
     Map<String, String> params = new HashMap<String, String>();
@@ -37,7 +42,6 @@ public class PostsController {
     @RequestMapping(value = "/addNewPost", method = RequestMethod.POST)
     public String addNewPost(Model model, Posts pst) {
         Integer newId = postsService.insertPosts(pst);
-        System.out.println("новый ID " + newId);
         Posts posts = postsService.getPostsById(newId);
         if (posts != null)
             postCaption = posts.getCaption();
@@ -99,6 +103,7 @@ public class PostsController {
             System.out.println("не найден пост");
     //    String userName =
      //   usersService.getUserNameById(posts.getUserId());
+        params.put("postid", posts.getPostId().toString());
         params.put("username", posts.getUserName());
         params.put("caption", posts.getCaption());
         params.put("text", posts.getText());
@@ -109,6 +114,13 @@ public class PostsController {
     @GetMapping("single-post")
     public String singlepost(Model model) {
         model.addAttribute("postInfo", params);
+        return "/single-post";
+    }
+
+    @RequestMapping(value ="addComment", method = RequestMethod.POST)
+    public String addComment(@ModelAttribute("com") Comments com) {
+        Integer newId = commentsService.insertComment(com);
+
         return "/single-post";
     }
 
