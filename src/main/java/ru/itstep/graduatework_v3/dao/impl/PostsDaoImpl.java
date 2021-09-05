@@ -8,12 +8,8 @@ import ru.itstep.graduatework_v3.model.Posts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-import ru.itstep.graduatework_v3.model.Users;
-
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
-//import java.util.*;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.text.DateFormat;

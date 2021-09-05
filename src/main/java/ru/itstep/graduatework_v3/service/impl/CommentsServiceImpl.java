@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itstep.graduatework_v3.dao.CommentsDao;
 import ru.itstep.graduatework_v3.model.Comments;
+import ru.itstep.graduatework_v3.model.Posts;
 import ru.itstep.graduatework_v3.service.CommentsService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {
@@ -28,5 +30,10 @@ public class CommentsServiceImpl implements CommentsService {
     public void deleteComment(Integer comId) {
         commentsDao.deleteComment(comId);
 
+    }
+
+    @Override
+    public List<Comments> getCommentsByPostId(Integer postId) {
+        return commentsDao.getCommentsByPostId(postId);
     }
 }

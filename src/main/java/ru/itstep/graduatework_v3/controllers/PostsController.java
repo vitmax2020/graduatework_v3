@@ -96,17 +96,22 @@ public class PostsController {
     @RequestMapping(value ="single-post-id", method = RequestMethod.POST)
     public String processRequest(@ModelAttribute("pst") Posts pst) {
         System.out.println("сюда зашли - контроллер");
-        Posts posts = postsService.getPostsById(pst.getPostId());
+        Integer postId = pst.getPostId();
+        Posts posts = postsService.getPostsById(postId);
         if (posts != null)
             postCaption = posts.getCaption();
         else
             System.out.println("не найден пост");
+        List<Comments> commentslist1;
+        commentslist1 = commentsService.getCommentsByPostId(postId);
+
     //    String userName =
      //   usersService.getUserNameById(posts.getUserId());
         params.put("postid", posts.getPostId().toString());
         params.put("username", posts.getUserName());
         params.put("caption", posts.getCaption());
         params.put("text", posts.getText());
+      //  params.put("comments", commentslist1);
 
         return "redirect:/single-post";
     }

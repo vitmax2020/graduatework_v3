@@ -5,10 +5,16 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import ru.itstep.graduatework_v3.dao.CommentsDao;
 import ru.itstep.graduatework_v3.model.Comments;
+import ru.itstep.graduatework_v3.model.Posts;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -41,5 +47,25 @@ public class CommentsDaoImpl extends JdbcDaoSupport implements CommentsDao {
     @Override
     public void deleteComment(Integer CommentID) {
 
+    }
+
+    @Override
+    public List<Comments> getCommentsByPostId(Integer postId) {
+        String sql = "SELECT * FROM comments WHERE PostId = ? ORDER BY DateCreate desc";
+        Object[] params = new Object[]{postId};
+
+        List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql, params);
+
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        List<Comments> result = new ArrayList<Comments>();
+        for (Map<String, Object> row : rows) {
+            Comments com = new Comments();
+            com.setPostId((Integer) row.get("PostId"));
+            com.setTextComment((String) row.get("setTextComment"));
+            com.setUserName((String) row.get("username"));
+            com.setDateCreate((Date) row.get("DateCreate"));
+            result.add(com);
+        }
+        return result;
     }
 }
