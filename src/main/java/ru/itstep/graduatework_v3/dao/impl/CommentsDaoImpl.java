@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +51,7 @@ public class CommentsDaoImpl extends JdbcDaoSupport implements CommentsDao {
     }
 
     @Override
-    public List<Comments> getCommentsByPostId(Integer postId) {
+    public List<Comments> getCommentsByPostId(Integer postId) throws ParseException {
         String sql = "SELECT * FROM comments WHERE PostId = ? ORDER BY DateCreate desc";
         Object[] params = new Object[]{postId};
 
@@ -63,7 +64,8 @@ public class CommentsDaoImpl extends JdbcDaoSupport implements CommentsDao {
             com.setPostId((Integer) row.get("PostId"));
             com.setTextComment((String) row.get("setTextComment"));
             com.setUserName((String) row.get("username"));
-            com.setDateCreate((Date) row.get("DateCreate"));
+        //    com.setDateCreate(getTimestamp(row.get("DateCreate")).toLocalDateTime()));
+        //    com.setDateCreate( df.parse((String) row.get("DateCreate")));
             result.add(com);
         }
         return result;

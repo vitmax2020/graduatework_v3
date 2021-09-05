@@ -6,7 +6,7 @@ public class Rating {
     private Integer RatingId;
     private Integer PostId;
     private Integer UserId;
-    private Integer ReatingValue;
+    private Integer RatingValue;
     private Date DateCreate;
 
     public Integer getRatingId() {
@@ -33,12 +33,12 @@ public class Rating {
         UserId = userId;
     }
 
-    public Integer getReatingValue() {
-        return ReatingValue;
+    public Integer getRatingValue() {
+        return RatingValue;
     }
 
-    public void setReatingValue(Integer reatingValue) {
-        ReatingValue = reatingValue;
+    public void setRatingValue(Integer ratingValue) {
+        RatingValue = ratingValue;
     }
 
     public Date getDateCreate() {

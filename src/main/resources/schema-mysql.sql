@@ -52,9 +52,10 @@ CREATE TABLE `foode`.`rating`
     `RatingId`     INT      NOT NULL  AUTO_INCREMENT,
     `PostId`       INT      NOT NULL,
     `UserId`       INT      NOT NULL,
-    `ReatingValue` INT      NULL,
+    `RatingValue`  TINYINT  NOT NULL,
     `DateCreate`   DATETIME NULL,
-    PRIMARY KEY (`RatingId`)
+    PRIMARY KEY (`RatingId`),
+    UNIQUE KEY `post_and_user` (`PostId`,`UserId`)
 )
     COMMENT = 'Таблица рейтингов постов';
 
@@ -63,7 +64,7 @@ DROP TRIGGER IF EXISTS `foode`.`rating_BEFORE_INSERT`;
 DELIMITER $$
 USE `foode`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `rating_BEFORE_INSERT` BEFORE INSERT ON `rating` FOR EACH ROW BEGIN
-    set @newRating = (select max(rating) + new.ReatingValue
+    set @newRating = (select max(rating) + new.RatingValue
                       from posts where postid = new.PostId);
 
     update posts

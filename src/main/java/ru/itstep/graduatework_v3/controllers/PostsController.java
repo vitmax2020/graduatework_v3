@@ -5,15 +5,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import ru.itstep.graduatework_v3.dao.RatingDao;
 import ru.itstep.graduatework_v3.model.Comments;
 import ru.itstep.graduatework_v3.model.Posts;
+import ru.itstep.graduatework_v3.model.Rating;
 import ru.itstep.graduatework_v3.model.Users;
 import ru.itstep.graduatework_v3.service.CommentsService;
 import ru.itstep.graduatework_v3.service.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.itstep.graduatework_v3.service.RatingService;
 import ru.itstep.graduatework_v3.service.UsersService;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +33,10 @@ public class PostsController {
 
     @Autowired
     CommentsService commentsService;
+
+    @Autowired
+    RatingService ratingService;
+
 
     private List<String> postslist = new ArrayList<>();
     private String postCaption;
@@ -94,23 +102,20 @@ public class PostsController {
     }
 
     @RequestMapping(value ="single-post-id", method = RequestMethod.POST)
-    public String processRequest(@ModelAttribute("pst") Posts pst) {
+    public String processRequest(@ModelAttribute("pst") Posts pst) throws ParseException {
         System.out.println("сюда зашли - контроллер");
         Integer postId = pst.getPostId();
         Posts posts = postsService.getPostsById(postId);
         if (posts != null)
             postCaption = posts.getCaption();
-        else
-            System.out.println("не найден пост");
-        List<Comments> commentslist1;
-        commentslist1 = commentsService.getCommentsByPostId(postId);
 
-    //    String userName =
-     //   usersService.getUserNameById(posts.getUserId());
+        List<Comments> commentslist1 = commentsService.getCommentsByPostId(postId);
+
         params.put("postid", posts.getPostId().toString());
         params.put("username", posts.getUserName());
         params.put("caption", posts.getCaption());
         params.put("text", posts.getText());
+        params.put("rating", posts.getRating().toString());
       //  params.put("comments", commentslist1);
 
         return "redirect:/single-post";
@@ -126,9 +131,28 @@ public class PostsController {
     public String addComment(@ModelAttribute("com") Comments com) {
         Integer newId = commentsService.insertComment(com);
 
-        return "/single-post";
+        return "redirect:/single-post";
     }
 
+    @RequestMapping(value ="/like", method = RequestMethod.POST)
+    public String like(@ModelAttribute("rtg") Rating rtg) {
+        String userName = usersService.getCurrentUserName();
+        Integer userId = usersService.getUserIdByName(userName);
+        rtg.setUserId(userId);
+        rtg.setRatingValue(1);
+        ratingService.insertRating(rtg);
+        return "redirect:/single-post";
+    }
+
+    @RequestMapping(value ="/dislike", method = RequestMethod.POST)
+    public String dislike(@ModelAttribute("pst") Rating rtg) {
+        String userName = usersService.getCurrentUserName();
+        Integer userId = usersService.getUserIdByName(userName);
+        rtg.setUserId(userId);
+        rtg.setRatingValue(-1);
+        ratingService.insertRating(rtg);
+        return "redirect:/single-post";
+    }
 /*    @RequestMapping("/posts-list")
     class PersonController {
 

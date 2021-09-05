@@ -65,19 +65,34 @@
                                         <span>автор</span>
                                         <span th:text="${postInfo.username}"></span>
                                 </div>
-                                    <a href="#"><i class="fa fa-eye"></i> 192</a>
+                                    <a href="#"><i class="fa fa-eye"></i>
+                                        <span th:text="${postInfo.rating}"></span>
+                                    </a>
                                     <a href="#"><i class="fa fa-comments"></i> 08</a>
                                 </div>
                                 <span th:utext="${postInfo.text}"></span>
                             </div>
                         </div>
-
                         <!-- Post Tags & Share -->
                         <div class="post-tags-share d-flex justify-content-between align-items-center">
                             <!-- Tags -->
                             <ol class="popular-tags d-flex flex-wrap">
-                                <li><a href="#">Creative</a></li>
-                                <li><a href="#">Unique</a></li>
+                                <form action="/like" method="post" modelAttribute="com">
+                                    <fieldset>
+                                        <div class="col-6">
+                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.postid}">
+                                            <button type="submit" class="btn foode-btn btn-sm">LIKE</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <form action="/dislike" method="post" modelAttribute="com">
+                                    <fieldset>
+                                        <div class="col-6">
+                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.postid}">
+                                            <button type="submit" class="btn foode-btn btn-sm">DISLIKE</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
                             </ol>
                         </div>
 

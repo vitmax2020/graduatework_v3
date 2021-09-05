@@ -8,6 +8,7 @@ import ru.itstep.graduatework_v3.model.Posts;
 import ru.itstep.graduatework_v3.service.CommentsService;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -33,7 +34,13 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public List<Comments> getCommentsByPostId(Integer postId) {
-        return commentsDao.getCommentsByPostId(postId);
+    public List<Comments> getCommentsByPostId(Integer postId)  {
+        List<Comments> newList = null;
+        try {
+            newList = commentsDao.getCommentsByPostId(postId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newList;
     }
 }
