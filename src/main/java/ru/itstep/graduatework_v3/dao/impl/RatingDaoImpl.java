@@ -43,4 +43,22 @@ public class RatingDaoImpl extends JdbcDaoSupport implements RatingDao {
         return rs.getInt("rat") ;
         else return 0;
     }
+
+    @Override
+    public Integer getCountLikeByPostId(Integer PostId) {
+        String sql = "SELECT COUNT(RatingId) as rat FROM rating WHERE PostId =? and RatingValue = 1";
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet(sql, PostId.toString());
+        if(rs.first())
+            return rs.getInt("rat") ;
+        else return 0;
+    }
+
+    @Override
+    public Integer getCountDeslikeByPostId(Integer PostId) {
+        String sql = "SELECT COUNT(RatingId) as rat FROM rating WHERE PostId =? and RatingValue = -1";
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet(sql, PostId.toString());
+        if(rs.first())
+            return rs.getInt("rat") ;
+        else return 0;
+    }
 }

@@ -10,4 +10,5 @@ public interface CommentsService {
     Integer insertComment(Comments com);
     void deleteComment(Integer comId);
     List<Comments> getCommentsByPostId(Integer postId) throws ParseException;
+    Integer getCountCommentsByPostId(Integer PostId);
 }

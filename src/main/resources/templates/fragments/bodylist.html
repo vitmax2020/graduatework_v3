@@ -126,7 +126,7 @@
                                 </a>
                                 <div class="post-meta">
                                     <a href="#"><span>by</span> Sarah Jenks</a>
-                                    <a href="#"><i class="fa fa-eye"></i> 192</a>
+                                    <a href="#"><i class="fa fa-gratipay"></i> 192</a>
                                     <a href="#"><i class="fa fa-comments"></i> 08</a>
                                 </div>
                                 <p class="post-excerpt">Excepteur sint occaecat cupidatat non proident, sunt in culpa
@@ -162,6 +162,9 @@
                                 <div class="post-meta">
                                     <a href="#"><span th:text="${postList.UserName}"</span> </a>
                                     <a href="#"><i class="fa fa-comments"></i>
+                                        <span th:text="${postList.rating}"></span>
+                                    </a>
+                                    <a href="#"><i class="fa fa-gratipay"></i>
                                         <span th:text="${postList.rating}"></span>
                                     </a>
                                 </div>

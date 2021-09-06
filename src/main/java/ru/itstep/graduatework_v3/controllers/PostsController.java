@@ -40,7 +40,8 @@ public class PostsController {
 
     private List<String> postslist = new ArrayList<>();
     private String postCaption;
-    Map<String, String> params = new HashMap<String, String>();
+
+    Map<String, Object> postmodel = new HashMap<String, Object>();
 
     /*  @RequestMapping(value = "/addNewPost", method = RequestMethod.GET)
       public ModelAndView show() {
@@ -59,9 +60,9 @@ public class PostsController {
         //  postCaption = posts.getCaption();
         String userName =
                 usersService.getUserNameById(posts.getUserId());
-        params.put("username", userName);
-        params.put("caption", posts.getCaption());
-        params.put("text", posts.getText());
+        postmodel.put("username", userName);
+        postmodel.put("caption", posts.getCaption());
+        postmodel.put("text", posts.getText());
 
         //  String result = restTemplate.getForObject(GET_URL, String.class, params);
 
@@ -110,20 +111,35 @@ public class PostsController {
             postCaption = posts.getCaption();
 
         List<Comments> commentslist1 = commentsService.getCommentsByPostId(postId);
-
-        params.put("postid", posts.getPostId().toString());
+        Integer iPostId = posts.getPostId();
+        Map<String, String> params = new HashMap<String, String>();
+    //    Map<String, String> comms = new HashMap<String, String>();
+        //TODO заполняем модель для отдельного поста
+    //    params.put("autorizeuser",usersService.getCurrentUserName());
+        params.put("postid", iPostId.toString());
         params.put("username", posts.getUserName());
         params.put("caption", posts.getCaption());
         params.put("text", posts.getText());
         params.put("rating", posts.getRating().toString());
-      //  params.put("comments", commentslist1);
+        params.put("countlike", ratingService.getCountLikeByPostId(iPostId).toString());
+        params.put("countdeslike", ratingService.getCountDeslikeByPostId(iPostId).toString());
+        params.put("countcomments", commentsService.getCountCommentsByPostId(iPostId).toString());
+/*        //TODO заполняем модель комментариями
+        for (Comments i:commentslist1) {
+            comms.put("commentsautor", i.getUserName());
+            comms.put("commentstext", i.getTextComment());
+            System.out.println(i.getUserName());
+        }*/
+        postmodel.put("params", params);
+        postmodel.put("comments", commentslist1);
+      //+i.getCommentsId().toString()
 
         return "redirect:/single-post";
     }
 
     @GetMapping("single-post")
     public String singlepost(Model model) {
-        model.addAttribute("postInfo", params);
+        model.addAttribute("postInfo", postmodel);
         return "/single-post";
     }
 

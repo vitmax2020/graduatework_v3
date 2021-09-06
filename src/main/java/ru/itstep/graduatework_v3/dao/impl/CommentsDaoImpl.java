@@ -2,6 +2,7 @@ package ru.itstep.graduatework_v3.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import ru.itstep.graduatework_v3.dao.CommentsDao;
 import ru.itstep.graduatework_v3.model.Comments;
@@ -62,12 +63,21 @@ public class CommentsDaoImpl extends JdbcDaoSupport implements CommentsDao {
         for (Map<String, Object> row : rows) {
             Comments com = new Comments();
             com.setPostId((Integer) row.get("PostId"));
-            com.setTextComment((String) row.get("setTextComment"));
+            com.setTextComment((String) row.get("TextComment"));
             com.setUserName((String) row.get("username"));
         //    com.setDateCreate(getTimestamp(row.get("DateCreate")).toLocalDateTime()));
         //    com.setDateCreate( df.parse((String) row.get("DateCreate")));
             result.add(com);
         }
         return result;
+    }
+
+    @Override
+    public Integer getCountCommentsByPostId(Integer PostId) {
+        String sql = "SELECT COUNT(CommentId) as comm FROM comments WHERE PostId =?";
+        SqlRowSet rs = getJdbcTemplate().queryForRowSet(sql, PostId.toString());
+        if(rs.first())
+            return rs.getInt("comm") ;
+        else return 0;
     }
 }

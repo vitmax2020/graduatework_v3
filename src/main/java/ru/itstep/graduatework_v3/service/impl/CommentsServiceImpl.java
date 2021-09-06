@@ -43,4 +43,9 @@ public class CommentsServiceImpl implements CommentsService {
         }
         return newList;
     }
+
+    @Override
+    public Integer getCountCommentsByPostId(Integer PostId) {
+        return commentsDao.getCountCommentsByPostId(PostId);
+    }
 }

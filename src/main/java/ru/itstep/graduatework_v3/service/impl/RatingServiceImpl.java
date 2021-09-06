@@ -29,4 +29,14 @@ public class RatingServiceImpl implements RatingService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public Integer getCountLikeByPostId(Integer PostId) {
+        return ratingDao.getCountLikeByPostId(PostId);
+    }
+
+    @Override
+    public Integer getCountDeslikeByPostId(Integer PostId) {
+        return ratingDao.getCountDeslikeByPostId(PostId);
+    }
 }

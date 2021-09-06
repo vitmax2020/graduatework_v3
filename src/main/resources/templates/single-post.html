@@ -57,20 +57,25 @@
                                 <p class="post-date">MAY 8, 2018 / foody</p>
 
                                 <h4 class="post-title">
-                                    <span th:text="${postInfo.caption}"></span></h4>
+                                    <span th:text="${postInfo.params.caption}"></span></h4>
 
                               <!--  <span th:if="${caption != null}" th:utext="${caption}"></span> -->
                                 <div class="post-meta">
                                     <div>
                                         <span>автор</span>
-                                        <span th:text="${postInfo.username}"></span>
+                                        <span th:text="${postInfo.params.username}"></span>
                                 </div>
-                                    <a href="#"><i class="fa fa-eye"></i>
-                                        <span th:text="${postInfo.rating}"></span>
+                                    <a href="#"><i class="fa fa-thumbs-o-up"></i>
+                                        <span th:text="${postInfo.params.countlike}"></span>
                                     </a>
-                                    <a href="#"><i class="fa fa-comments"></i> 08</a>
+                                    <a href="#"><i class="fa fa-thumbs-o-down"></i>
+                                        <span th:text="${postInfo.params.countdeslike}"></span>
+                                    </a>
+                                    <a href="#"><i class="fa fa-comments"></i>
+                                        <span th:text="${postInfo.params.countcomments}"></span>
+                                    </a>
                                 </div>
-                                <span th:utext="${postInfo.text}"></span>
+                                <span th:utext="${postInfo.params.text}"></span>
                             </div>
                         </div>
                         <!-- Post Tags & Share -->
@@ -80,7 +85,7 @@
                                 <form action="/like" method="post" modelAttribute="com">
                                     <fieldset>
                                         <div class="col-6">
-                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.postid}">
+                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.params.postid}">
                                             <button type="submit" class="btn foode-btn btn-sm">LIKE</button>
                                         </div>
                                     </fieldset>
@@ -88,81 +93,26 @@
                                 <form action="/dislike" method="post" modelAttribute="com">
                                     <fieldset>
                                         <div class="col-6">
-                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.postid}">
+                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.params.postid}">
                                             <button type="submit" class="btn foode-btn btn-sm">DISLIKE</button>
                                         </div>
                                     </fieldset>
                                 </form>
                             </ol>
-                        </div>
-
-                        <!-- Related Post Area -->
-                        <div class="related-posts clearfix">
-                            <!-- Line -->
-                            <div class="curve-line bg-img mb-50" style="background-image: url(img/core-img/breadcrumb-line.png);"></div>
-
-                            <!-- Headline -->
-                            <h4 class="headline">Relatest News</h4>
-
-                            <div class="row">
-
-                                <!-- Single Blog Post -->
-                                <div class="col-12 col-md-6">
-                                    <div class="single-blog-post related-post">
-                                        <!-- Thumbnail -->
-                                        <div class="post-thumbnail mb-50">
-                                            <a href="#"><img src="img/blog-img/13.jpg" alt=""></a>
-                                        </div>
-                                        <!-- Content -->
-                                        <div class="post-content mb-50">
-                                            <p class="post-date">MAY 12, 2018 / drinks</p>
-                                            <a href="#" class="post-title">
-                                                <h4>Grain-Free Sweet &amp; Savory Activate Walnut Granola</h4>
-                                            </a>
-                                            <div class="post-meta">
-                                                <a href="#"><span>by</span> Sarah Jenks</a>
-                                                <a href="#"><i class="fa fa-eye"></i> 192</a>
-                                                <a href="#"><i class="fa fa-comments"></i> 08</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Single Blog Post -->
-                                <div class="col-12 col-md-6">
-                                    <div class="single-blog-post related-post">
-                                        <!-- Thumbnail -->
-                                        <div class="post-thumbnail mb-50">
-                                            <a href="#"><img src="img/blog-img/14.jpg" alt=""></a>
-                                        </div>
-                                        <!-- Content -->
-                                        <div class="post-content mb-50">
-                                            <p class="post-date">MAY 15, 2018 / Coffee</p>
-                                            <a href="#" class="post-title">
-                                                <h4>Self-Care Interview Series: Gabrielle Russomagno</h4>
-                                            </a>
-                                            <div class="post-meta">
-                                                <a href="#"><span>by</span> Sarah Jenks</a>
-                                                <a href="#"><i class="fa fa-eye"></i> 192</a>
-                                                <a href="#"><i class="fa fa-comments"></i> 08</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
                             <!-- Line -->
                             <div class="curve-line bg-img" style="background-image: url(img/core-img/breadcrumb-line.png);"></div>
                         </div>
 
+
+
                         <!-- Comment Area Start -->
                         <div class="comment_area clearfix">
-                            <h4 class="headline">12 Comments</h4>
-
-                            <ol>
+                            <h4 class="headline">
+                                <span th:text="${postInfo.params.countcomments}"></span>
+                                Комментариев</h4>
+                            <ol >
                                 <!-- Single Comment Area -->
-                                <li class="single_comment_area">
+                                <li class="single_comment_area" th:each="comm : ${postInfo.comments}">
                                     <div class="comment-wrapper d-flex">
                                         <!-- Comment Meta -->
                                         <div class="comment-author">
@@ -171,51 +121,15 @@
                                         <!-- Comment Content -->
                                         <div class="comment-content">
                                             <span class="comment-date">27 Aug 2018</span>
-                                            <h5>Brandon Kelley</h5>
-                                            <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetu adipisci velit, sed quia non numquam eius modi</p>
-                                            <a href="#">Like</a>
-                                            <a class="active" href="#">Reply</a>
-                                        </div>
-                                    </div>
-                                    <ol class="children">
-                                        <li class="single_comment_area">
-                                            <div class="comment-wrapper d-flex">
-                                                <!-- Comment Meta -->
-                                                <div class="comment-author">
-                                                    <img src="img/blog-img/16.jpg" alt="">
-                                                </div>
-                                                <!-- Comment Content -->
-                                                <div class="comment-content">
-                                                    <span class="comment-date">27 Aug 2018</span>
-                                                    <h5>John Doe</h5>
-                                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetu adipisci velit, sed quia non numquam eius modi</p>
-                                                    <a href="#">Like</a>
-                                                    <a class="active" href="#">Reply</a>
-                                                </div>
+                                            <h5><span th:text="${comm.UserName}"></span></h5>
+                                            <p><span th:text="${comm.TextComment}"></span></p>
                                             </div>
-                                        </li>
-                                    </ol>
-                                </li>
-                                <li class="single_comment_area">
-                                    <div class="comment-wrapper d-flex">
-                                        <!-- Comment Meta -->
-                                        <div class="comment-author">
-                                            <img src="img/blog-img/17.jpg" alt="">
                                         </div>
-                                        <!-- Comment Content -->
-                                        <div class="comment-content">
-                                            <span class="comment-date">27 Aug 2018</span>
-                                            <h5>Michen Jason</h5>
-                                            <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetu adipisci velit, sed quia non numquam eius modi</p>
-                                            <a href="#">Like</a>
-                                            <a class="active" href="#">Reply</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ol>
-                        </div>
+                                    </li>
+                                </ol>
+                            </div>
 
-                        <!-- Leave A Comment -->
+                            <!-- Leave A Comment -->
                         <div class="leave-comment-area clearfix">
                             <div class="comment-form">
                                 <h4 class="headline">Leave A Comment</h4>
@@ -234,7 +148,7 @@
                                                 <input type="email" class="form-control" name="Email" placeholder="Email">
                                             </div>
                                         </div>
-                                        <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.postid}">
+                                        <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.params.postid}">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <textarea class="form-control" name="TextComment" id="TextComment" cols="30" rows="10" placeholder="Comment"></textarea>

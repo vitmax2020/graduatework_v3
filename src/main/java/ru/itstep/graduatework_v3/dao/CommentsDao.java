@@ -10,5 +10,6 @@ public interface  CommentsDao {
     Integer insertComment(Comments com);
     void deleteComment(Integer CommentID);
     List<Comments> getCommentsByPostId(Integer postId) throws ParseException;
+    Integer getCountCommentsByPostId(Integer PostId);
 
 }
