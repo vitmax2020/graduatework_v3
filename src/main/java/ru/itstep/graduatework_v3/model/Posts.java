@@ -23,9 +23,10 @@ public class Posts {
         this.imglink = imglink;
     }
 
-    public Posts(Integer postid, String caption, String text, Integer rating, Integer visible, Date datecreate,
+    public Posts(Integer postid, Integer userid, String caption, String text, Integer rating, Integer visible, Date datecreate,
                  String username, String imglink) {
         this.setPostId(postid);
+        this.setUserId(userid);
         this.setCaption(caption);
         this.setText(text);
         this.setRating(rating);

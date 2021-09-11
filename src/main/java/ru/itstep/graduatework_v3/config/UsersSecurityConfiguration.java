@@ -43,7 +43,7 @@ public class UsersSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/index", "/addNewUser", "/single-post", "/addNewUsers").permitAll()
-                .antMatchers("/new-post","/addNewPost","/posts-list").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/new-post","/addNewPost","/posts-list", "/profile").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403")

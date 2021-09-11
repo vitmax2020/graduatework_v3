@@ -5,7 +5,7 @@ import java.util.List;
 import ru.itstep.graduatework_v3.model.Users;
 
 public interface UsersDao {
-	void insertUser(Users cus);
+	int insertUser(Users cus);
 	void updateUser(Users cus);
 	void deleteUser(Integer Id);
 	void insertUsers(List<Users> users);

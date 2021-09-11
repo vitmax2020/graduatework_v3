@@ -1,5 +1,6 @@
 package ru.itstep.graduatework_v3.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ public class UsersDaoImpl extends JdbcDaoSupport implements UsersDao {
     }
 
     @Override
-    public void insertUser(Users user) {
+    public int insertUser(Users user) {
 
         String sql = "INSERT INTO users " +
                 "( Name, password, roule, isactive) VALUES (?, ?, 1, 1)";
@@ -46,6 +47,9 @@ public class UsersDaoImpl extends JdbcDaoSupport implements UsersDao {
                 user.getName(),
                 hashedPassword
         });
+        Map<String, Object> rowMap = getJdbcTemplate().queryForMap("SELECT LAST_INSERT_ID() as id");
+        BigInteger UserId = (java.math.BigInteger) rowMap.get("id");
+        return UserId.intValue();
     }
 
     @Override

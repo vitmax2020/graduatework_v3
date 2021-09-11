@@ -1,13 +1,16 @@
 package ru.itstep.graduatework_v3.model;
 
+import java.io.InputStream;
+import java.util.Date;
+
 public class Profile {
     private Integer ProfileId;
     private Integer UserId;
     private String Email;
-    private String Photo;
-    private String Age;
+    private byte[] Photo;
+    private Date Age;
     private String Sex;
-    private String DataReg;
+    private Date DataReg;
 
     public Integer getProfileId() {
         return ProfileId;
@@ -33,19 +36,19 @@ public class Profile {
         Email = email;
     }
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return Photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         Photo = photo;
     }
 
-    public String getAge() {
+    public Date getAge() {
         return Age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Date age) {
         Age = age;
     }
 
@@ -57,11 +60,11 @@ public class Profile {
         Sex = sex;
     }
 
-    public String getDataReg() {
+    public Date getDataReg() {
         return DataReg;
     }
 
-    public void setDataReg(String dataReg) {
+    public void setDataReg(Date dataReg) {
         DataReg = dataReg;
     }
 }

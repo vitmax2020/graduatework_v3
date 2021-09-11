@@ -16,6 +16,7 @@ public class PostsMapper implements RowMapper<Posts> {
     public Posts mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         Integer postid = rs.getInt("PostId");
+        Integer userid = rs.getInt("UserId");
         String caption = rs.getString("Caption");
         String text = rs.getString("Text");
         Integer rating = rs.getInt("Rating");
@@ -24,6 +25,6 @@ public class PostsMapper implements RowMapper<Posts> {
         String username = rs.getString("UserName");
         String imglink = rs.getString("Imglink");
 
-        return new Posts(postid, caption, text, rating, visible, datecreate, username, imglink);
+        return new Posts(postid, userid, caption, text, rating, visible, datecreate, username, imglink);
     }
 }

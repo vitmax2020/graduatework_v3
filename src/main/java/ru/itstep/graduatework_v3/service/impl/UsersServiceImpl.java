@@ -4,25 +4,30 @@ import java.security.Principal;
 import java.security.ProtectionDomain;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import ru.itstep.graduatework_v3.dao.impl.UsersDaoImpl;
 import ru.itstep.graduatework_v3.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ru.itstep.graduatework_v3.dao.UsersDao;
+import ru.itstep.graduatework_v3.service.ProfileService;
 import ru.itstep.graduatework_v3.service.UsersService;
 
 @Service
 public class UsersServiceImpl implements UsersService {
 
 	@Autowired
-	UsersDaoImpl usersDao;
+	UsersDao usersDao;
+	@Autowired
+	ProfileService profileService;
 
 	@Override
 	public void insertUser(Users users) {
-		usersDao.insertUser(users);
+		int newId = usersDao.insertUser(users);
+		profileService.insertProfile(newId);
 	}
 
 	@Override
@@ -79,11 +84,18 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public String getCurrentUserName() {
 
-		UserDetails userDetailsImpl = (UserDetails)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+
+	/*	UserDetails userDetailsImpl = (UserDetails)
 				org.springframework.security.core.context.SecurityContextHolder
 						.getContext().getAuthentication().getPrincipal();
+		if(userDetailsImpl != null){
 		String userName = userDetailsImpl.getUsername();
-			return userName;
+			return userName;}
+		else*/
+		    return currentPrincipalName;
 	}
 
 }

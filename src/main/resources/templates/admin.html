@@ -6,6 +6,7 @@
     <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: header"/>
 <h3>Welcome :
     <span th:utext="${#request.userPrincipal.name}"></span>
 </h3>
@@ -13,8 +14,15 @@
 
 <br/><br/>
 
-<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+<div th:if="${admmodel.userInfo != null}" th:utext="${admmodel.userInfo}"></div>
 
+<div th:each="u : ${admmodel.usersList}">
+    <h5><span th:text="${u.id}"></span>
+        <span th:text="${u.name}"></span>
+    </h5>
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
 
 </body>
 </html>

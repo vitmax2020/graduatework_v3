@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/header :: header-css"/>
+
 </head>
 <body>
 
@@ -120,7 +121,6 @@
                             </div>
                             <!-- Content -->
                             <div class="post-content mb-50">
-                                <p class="post-date">MAY 8, 2018 / foody</p>
                                 <a href="#" class="post-title">
                                     <h4>Vegetarian Spring Pho with Sweet Potato Noodles and Heirloom Beans</h4>
                                 </a>
@@ -139,37 +139,50 @@
                         </div>
 
 
-                        <div class="single-blog-post d-flex flex-wrap mt-50" th:each="postList : ${postList}">
+                        <div class="single-blog-post d-flex flex-wrap mt-50" th:each="pl : ${mainmodel.postList}">
                             <!-- Thumbnail -->
                             <div class="post-thumbnail mb-50">
                                 <!--    <a href="#"><img src="img/blog-img/9.jpg" alt=""></a>-->
-                                <a href="#"><img th:src="@{${postList.imglink}}" alt=""></a>
+                                <a href="#"><img th:src="@{${pl.imglink}}" alt=""></a>
                             </div>
                             <!-- Content -->
                             <div class="post-content mb-50">
                                 <p class="post-date">
-                                    <span th:text="${postList.datecreate}"></span></p>
+                                    <span th:text="${pl.datecreate}"></span></p>
                                 <form th:action="@{/single-post-id}" method="POST" modelAttribute="pst">
                                     <fieldset>
                                         <input type="text" style="display:none" name="postId" id="postId"
-                                               th:value="${postList.PostId}">
+                                               th:value="${pl.PostId}">
                                         <h4>
-                                            <input type="submit" class="link-button" th:value="${postList.caption}"/>
+                                            <input type="submit" class="link-button" th:value="${pl.caption}"/>
                                         </h4>
                                     </fieldset>
                                 </form>
 
                                 <div class="post-meta">
-                                    <a href="#"><span th:text="${postList.UserName}"</span> </a>
+                                    <form th:action="@{/single-profile-id}" method="POST" modelAttribute="prof"
+                                          name="linkpost" id="linkpost" class="linkpost">
+                                        <fieldset>
+                                            <input type="text" style="display:none" name="userId"
+                                                   th:value="${pl.UserId}">
+                                            <h4>
+
+                                                <a  href=single-profile-id? onclick="window.document.linkpost.submit()">
+                                                    <span  th:text="${pl.UserName}"></span>
+                                                </a>
+                                            </h4>
+                                        </fieldset>
+                                    </form>
+
                                     <a href="#"><i class="fa fa-comments"></i>
-                                        <span th:text="${postList.rating}"></span>
+                                        <span th:text="${pl.rating}"></span>
                                     </a>
                                     <a href="#"><i class="fa fa-gratipay"></i>
-                                        <span th:text="${postList.rating}"></span>
+                                        <span th:text="${pl.rating}"></span>
                                     </a>
                                 </div>
                                 <p class="post-excerpt">
-                                    <span th:text="${postList.text}"></span></p>
+                                    <span th:text="${pl.text}"></span></p>
                                 <a href="#" class="read-more-btn">Продолжить чтение <i class="fa fa-long-arrow-right"
                                                                                       aria-hidden="true"></i></a>
 

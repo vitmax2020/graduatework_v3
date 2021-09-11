@@ -24,15 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        System.out.println("UserDetails userName   "+userName);
         Users user = this.userDAO.getUsersByName(userName);
 
         if (user == null) {
             System.out.println("Пользователь не найден! " + userName);
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
-
-        System.out.println("Found User: " + user);
 
         List<String> roleNames = new ArrayList<>();
         Integer roleId = this.userDAO.getUserRole(user.getId());

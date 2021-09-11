@@ -18,7 +18,9 @@ import ru.itstep.graduatework_v3.utils.WebUtils;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -28,48 +30,37 @@ public class MainController {
     @Autowired
     UsersService usersService;
 
+    Map<String, Object> mainmodel = new HashMap<String, Object>();
+
     // @GetMapping(value = {"/", "/index"})
     @RequestMapping(value = {"/index", "/"}, method = RequestMethod.GET)
 
     public String index(Model model, Principal principal) {
-        if (principal != null)
-            model.addAttribute("userName", principal.getName());
-        else
-            model.addAttribute("userName", null);
 
         List<Posts> postslist1 = new ArrayList<>();
         postslist1 = postsService.getAllPosts();
+        if (principal != null)
+            mainmodel.put("userName", principal.getName());
+        else
+            mainmodel.put("userName", null);
 
-        model.addAttribute("postList", postslist1);
+        mainmodel.put("postList", postslist1);
+        model.addAttribute("mainmodel", mainmodel);
         return "/index";
-    }
-
-    //@GetMapping("/login")
-    //public String login() {
-    //    return "/login";
-    // }
-
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(Model model, Principal principal) {
-
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-        String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo", userInfo);
-
-        return "/admin";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model) {
-
+        mainmodel.put("userName", null);
+        model.addAttribute("mainmodel", mainmodel);
         return "/login";
     }
 
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+        mainmodel.put("userName", null);
+        model.addAttribute("mainmodel", mainmodel);
+        return "logout";
     }
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
@@ -86,7 +77,7 @@ public class MainController {
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
 
         String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userInfo", userInfo);
+        model.addAttribute("mainmodel", userInfo);
 
         return "userInfoPage";
     }
@@ -104,10 +95,12 @@ public class MainController {
             String message = "Hi " + principal.getName() //
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
+            mainmodel.put("userName", null);
+            model.addAttribute("mainmodel", mainmodel);
 
         }
 
-        return "403Page";
+        return "403";
     }
 
 
@@ -128,12 +121,11 @@ public class MainController {
 
 
     @GetMapping("/registration")
-    public String register() {
+    public String register(Model model) {
+        mainmodel.put("userName", null);
+        model.addAttribute("mainmodel", mainmodel);
         return "registration";
     }
-
-
-
 
 
 }

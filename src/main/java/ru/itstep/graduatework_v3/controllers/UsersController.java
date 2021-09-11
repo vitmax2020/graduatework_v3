@@ -25,7 +25,7 @@ public class UsersController {
 	public String processRequest(@ModelAttribute("emp") Users emp) {
 		System.out.println("сюда зашли - контроллер");
 		usersService.insertUser(emp);
-		return "/login";
+		return "redirect:/login";
 	}
 
 /*	@RequestMapping(value = "/addNewUser", method = RequestMethod.POST)

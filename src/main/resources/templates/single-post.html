@@ -7,19 +7,19 @@
 </head>
 
 <body>
-    <!-- ##### Preloader ##### -->
-    <div class="preloader d-flex align-items-center justify-content-center">
-        <div class="circle-preloader">
-            <img src="img/core-img/logo.png" alt="">
-            <div class="foode-preloader">
-                <span></span>
-            </div>
+<!-- ##### Preloader ##### -->
+<div class="preloader d-flex align-items-center justify-content-center">
+    <div class="circle-preloader">
+        <img src="img/core-img/logo.png" alt="">
+        <div class="foode-preloader">
+            <span></span>
         </div>
     </div>
-    <div th:replace="fragments/header :: header"/>
+</div>
+<div th:replace="fragments/header :: header"/>
 
-    <!-- ##### Header Area Start ##### -->
-    <header class="header-area">
+<!-- ##### Header Area Start ##### -->
+<header class="header-area">
 
     <!-- ##### Breadcrumb Area Start ##### -->
     <div class="breadcrumb-area">
@@ -29,9 +29,9 @@
                     <img src="img/core-img/breadcrumb-line.png" alt="">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Blog List</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Blog Single</li>
+                            <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Главная</a></li>
+                            <li class="breadcrumb-item"><a href="#">Блог</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Пост</li>
                         </ol>
                     </nav>
                 </div>
@@ -51,41 +51,43 @@
                         <!-- Post Details Area -->
                         <div class="single-post-details-area">
                             <div class="post-thumbnail mb-30">
-                                <img src="img/blog-img/1.jpg" alt="">
+                                <a href="#"><img th:src="@{${mainmodel.params.imglink}}" alt=""></a>
                             </div>
                             <div class="post-content">
                                 <p class="post-date">MAY 8, 2018 / foody</p>
 
                                 <h4 class="post-title">
-                                    <span th:text="${postInfo.params.caption}"></span></h4>
+                                    <span th:text="${mainmodel.params.caption}"></span></h4>
 
-                              <!--  <span th:if="${caption != null}" th:utext="${caption}"></span> -->
+                                <!--  <span th:if="${caption != null}" th:utext="${caption}"></span> -->
                                 <div class="post-meta">
                                     <div>
                                         <span>автор</span>
-                                        <span th:text="${postInfo.params.username}"></span>
-                                </div>
+                                        <span th:text="${mainmodel.params.author}"></span>
+                                    </div>
                                     <a href="#"><i class="fa fa-thumbs-o-up"></i>
-                                        <span th:text="${postInfo.params.countlike}"></span>
+                                        <span th:text="${mainmodel.params.countlike}"></span>
                                     </a>
                                     <a href="#"><i class="fa fa-thumbs-o-down"></i>
-                                        <span th:text="${postInfo.params.countdeslike}"></span>
+                                        <span th:text="${mainmodel.params.countdeslike}"></span>
                                     </a>
                                     <a href="#"><i class="fa fa-comments"></i>
-                                        <span th:text="${postInfo.params.countcomments}"></span>
+                                        <span th:text="${mainmodel.params.countcomments}"></span>
                                     </a>
                                 </div>
-                                <span th:utext="${postInfo.params.text}"></span>
+                                <span th:utext="${mainmodel.params.text}"></span>
                             </div>
                         </div>
                         <!-- Post Tags & Share -->
-                        <div class="post-tags-share d-flex justify-content-between align-items-center">
+                        <div class="post-tags-share d-flex justify-content-between align-items-center"
+                             th:if="${mainmodel.userName != null}">
                             <!-- Tags -->
                             <ol class="popular-tags d-flex flex-wrap">
                                 <form action="/like" method="post" modelAttribute="com">
                                     <fieldset>
                                         <div class="col-6">
-                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.params.postid}">
+                                            <input type="text" style="display:none" name="postId" id="postId"
+                                                   th:value="${mainmodel.params.postid}">
                                             <button type="submit" class="btn foode-btn btn-sm">LIKE</button>
                                         </div>
                                     </fieldset>
@@ -93,26 +95,27 @@
                                 <form action="/dislike" method="post" modelAttribute="com">
                                     <fieldset>
                                         <div class="col-6">
-                                            <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.params.postid}">
+                                            <input type="text" style="display:none" name="postId" id="postId"
+                                                   th:value="${mainmodel.params.postid}">
                                             <button type="submit" class="btn foode-btn btn-sm">DISLIKE</button>
                                         </div>
                                     </fieldset>
                                 </form>
                             </ol>
                             <!-- Line -->
-                            <div class="curve-line bg-img" style="background-image: url(img/core-img/breadcrumb-line.png);"></div>
+                            <div class="curve-line bg-img"
+                                 style="background-image: url(img/core-img/breadcrumb-line.png);"></div>
                         </div>
-
 
 
                         <!-- Comment Area Start -->
                         <div class="comment_area clearfix">
                             <h4 class="headline">
-                                <span th:text="${postInfo.params.countcomments}"></span>
+                                <span th:text="${mainmodel.params.countcomments}"></span>
                                 Комментариев</h4>
-                            <ol >
+                            <ol>
                                 <!-- Single Comment Area -->
-                                <li class="single_comment_area" th:each="comm : ${postInfo.comments}">
+                                <li class="single_comment_area" th:each="comm : ${mainmodel.comments}">
                                     <div class="comment-wrapper d-flex">
                                         <!-- Comment Meta -->
                                         <div class="comment-author">
@@ -123,41 +126,47 @@
                                             <span class="comment-date">27 Aug 2018</span>
                                             <h5><span th:text="${comm.UserName}"></span></h5>
                                             <p><span th:text="${comm.TextComment}"></span></p>
-                                            </div>
                                         </div>
-                                    </li>
-                                </ol>
-                            </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
 
-                            <!-- Leave A Comment -->
-                        <div class="leave-comment-area clearfix">
+                        <!-- Leave A Comment -->
+                        <div class="leave-comment-area clearfix"
+                             th:if="${mainmodel.userName != null}">
                             <div class="comment-form">
-                                <h4 class="headline">Leave A Comment</h4>
+                                <h4 class="headline">Добавить комментарий</h4>
 
                                 <!-- Comment Form -->
                                 <form action="/addComment" method="post" modelAttribute="com">
                                     <fieldset>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" name="UserName" placeholder="Name">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" style="display:none">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="UserName"
+                                                           placeholder="Name"
+                                                           th:value="${mainmodel.userName}">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" style="display:none">
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control" name="Email"
+                                                           placeholder="Email" value="qwe@tt">
+                                                </div>
+                                            </div>
+                                            <input type="text" style="display:none" name="postId" id="postId"
+                                                   th:value="${mainmodel.params.postid}">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <textarea class="form-control" name="TextComment" id="TextComment"
+                                                              cols="30" rows="10" placeholder="Комментарий"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn foode-btn">Отправить коммент</button>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="form-group">
-                                                <input type="email" class="form-control" name="Email" placeholder="Email">
-                                            </div>
-                                        </div>
-                                        <input type="text" style="display:none" name="postId" id="postId" th:value="${postInfo.params.postid}">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <textarea class="form-control" name="TextComment" id="TextComment" cols="30" rows="10" placeholder="Comment"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="btn foode-btn">Отправить коммент</button>
-                                        </div>
-                                    </div>
                                     </fieldset>
                                 </form>
                             </div>
@@ -177,10 +186,14 @@
                                 <h6>Categories</h6>
                             </div>
                             <ol class="foode-catagories">
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Drink</span> <span>(18)</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Foody</span> <span>(28)</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Tea</span> <span>(15)</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Coffee</span> <span>(27)</span></a></li>
+                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Drink</span> <span>(18)</span></a>
+                                </li>
+                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Foody</span> <span>(28)</span></a>
+                                </li>
+                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Tea</span> <span>(15)</span></a>
+                                </li>
+                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> Coffee</span> <span>(27)</span></a>
+                                </li>
                             </ol>
                         </div>
 
@@ -188,7 +201,7 @@
                         <div class="single-widget-area">
                             <!-- Title -->
                             <div class="widget-title">
-                                <h6>Latest Posts</h6>
+                                <h6>Последнии посты</h6>
                             </div>
 
                             <!-- Single Latest Posts -->
@@ -255,28 +268,12 @@
                                     <a href="#" class="post-author"><span>by</span> Erin Alderson</a>
                                 </div>
                             </div>
-
                         </div>
 
                         <!-- ##### Single Widget Area ##### -->
                         <div class="single-widget-area">
                             <!-- Adds -->
                             <a href="#"><img src="img/blog-img/add.png" alt=""></a>
-                        </div>
-
-                        <!-- ##### Single Widget Area ##### -->
-                        <div class="single-widget-area">
-                            <!-- Title -->
-                            <div class="widget-title">
-                                <h6>Archives</h6>
-                            </div>
-                            <ol class="foode-archives">
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> January 2018</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> February 2018</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> March 2018</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> April 2018</span></a></li>
-                                <li><a href="#"><span><i class="fa fa-stop" aria-hidden="true"></i> May 2018</span></a></li>
-                            </ol>
                         </div>
                     </div>
                 </div>
@@ -285,7 +282,7 @@
     </section>
     <!-- ##### Blog Content Area End ##### -->
 
-        <div th:replace="fragments/footer :: footer"/>
+    <div th:replace="fragments/footer :: footer"/>
 </body>
 
 </html>

@@ -9,7 +9,7 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 
-<form name="addpost" action="/addNewPost" method="POST" modelAttribute="pst">
+<form name="addpost" action="/addNewPost" method="POST" modelAttribute="pst" enctype="multipart/form-data">
     <fieldset>
         <div class="row">
             <div class="col-12 col-md-6">
@@ -23,6 +23,9 @@
                               placeholder="Текст рецепта"></textarea>
                 </div>
             </div>
+            <div>
+            <input type="file" name="file" placeholder="Загрузить титульное изображение"><br>
+            </div>
             <div class="col-12">
                 <button type="submit" class="btn foode-btn active m-2">Сохранить пост</button>
             </div>
@@ -30,11 +33,7 @@
 
     </fieldset>
 </form>
-<br>
-<form enctype="multipart/form-data" method="post">
-    <p><input type="file" name="f">
-        <input type="submit" class="btn foode-btn active m-2" value="Загрузить титульное изображение" accept="image/*,image/jpeg"></p>
-</form>
+
 <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
